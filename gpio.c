@@ -21,14 +21,25 @@
 #define PI_PUD_DOWN 1
 #define PI_PUD_UP   2
 
+/* gpio modes. */
+
 #define PI_INPUT  0
 #define PI_OUTPUT 1
+#define PI_ALT0   4
+#define PI_ALT1   5
+#define PI_ALT2   6
+#define PI_ALT3   7
+#define PI_ALT4   3
+#define PI_ALT5   2
+
+
 
 #define LOW  0
 #define HIGH 1
 
 extern void gpioSetPullUpDown(unsigned gpio, unsigned pud);
 extern void gpioSetMode(unsigned gpio, unsigned mode);
+extern int gpioGetMode(unsigned gpio);
 extern int gpioRead(unsigned gpio);
 extern void gpioWrite(unsigned gpio, unsigned level);
 extern int gpioInitialise(void);
@@ -52,6 +63,7 @@ void doMode (int argc, char *argv [])
 {
   int pin ;
   char *mode ;
+  int pinmode ;
 
   if (argc != 4)
   {
@@ -70,9 +82,10 @@ void doMode (int argc, char *argv [])
   else if (strcasecmp (mode, "up")      == 0) gpioSetPullUpDown (pin, PI_PUD_UP) ;
   else if (strcasecmp (mode, "down")    == 0) gpioSetPullUpDown (pin, PI_PUD_DOWN) ;
   else if (strcasecmp (mode, "off")     == 0) gpioSetPullUpDown (pin, PI_PUD_OFF) ;
+  else if (strcasecmp (mode, "get")     == 0) { pinmode=gpioGetMode       (pin); printf("%i\n", pinmode);}
   else
   {
-    fprintf (stderr, "%s: Invalid mode: %s. Should be in/out/up/down/off\n", argv [1], mode) ;
+    fprintf (stderr, "%s: Invalid mode: %s. Should be in/out/up/down/off/get\n", argv [1], mode) ;
     exit (1) ;
   }
 }
